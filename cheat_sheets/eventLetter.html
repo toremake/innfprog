@@ -35,6 +35,36 @@
 
     <script>
         //KODE FOR Å SKRIVE BREVET MED TASTATURET
+        document.addEventListener("keydown", function(event) {
+            console.log(event)
+            if(event.key.length === 1) {
+                document.getElementById("text").innerHTML += event.key
+            }
+            if(event.key === "Backspace") {
+                const text = document.getElementById("text").innerHTML
+                const newText = text.slice(0, text.length - 1)
+                document.getElementById("text").innerHTML = newText
+                console.log(text.slice(0, text.length - 1))
+            }
+            if(event.key === "Enter") {
+                //document.getElementById("text").innerHTML += "<br />"
+
+                //Finn siste avsluttende </p>. Legg til <p> etter denne avsluttende </p>-tagen, 
+                //og en </p> på slutten av setningen
+                const text = document.getElementById("text").innerHTML
+                const textArray = text.split("</p>")
+                let newText = ""
+                textArray.map((s) => {
+                    if(s.substring(0,2) === "<p>") {
+                        newText += s + "</p>"
+                    } else {
+                        newText += "<p>" + s + "</p>"
+                    }
+                })
+                console.log(textArray)
+                document.getElementById("text").innerHTML = newText
+            }
+        })
     </script>
 </body>
 </html>
