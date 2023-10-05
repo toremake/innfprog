@@ -20,7 +20,7 @@
         <script>
             //KONFIGURASJON
             //Kommandoer
-            //const commandChest = "Åpne skattekiste"
+            //Til hver kommando trenger vi selve kommandoen, hvilket bilde som skal vises hvis kommandoen er riktig, og en status (om den er løst eller ikke)
             const commands = [
                 {step: 1, command: "Åpne skattekiste", image: "img/2.png", solved: false},
                 {step: 2, command: "Fest ballong til stein", image: "img/3.png", solved: false},
@@ -34,18 +34,15 @@
 
             //Funksjon for å ta imot verdi fra input-felt
             function checkCommand() {
+                //Hent verdi skrevet i input-feltet og lagre den i variabelen userCommand
                 const userCommand = document.getElementById("command-field").value
                 console.log(userCommand)
+                //Tøm input-feltet så brukeren kan skrive ny kommando
                 document.getElementById("command-field").value = ""
                 //Test brukerinput mot kommando(er)
-                /*if(command === commands[0].command) {
-                    console.log("Kommandoen er riktig")
-                    document.getElementById("game-screen").src = "img/2.png"
-                } else {
-                    console.log("Kommandoen er feil")
-                }*/
+                //Vi må løpe gjennom alle kommandoer for å sjekke om brukerens input matcher en av kommandoene som er gyldige
                 commands.map((c, index) => {
-                    
+                    //Vi gjør både brukerens innskrevne kommando og kommandoene fra arrayen vår til små bokstaver, så vi ikke får feil dersom bruker har store/små bokstaver annerledes enn det er i kommandoen i arrayen
                     if(userCommand.toLowerCase() === c.command.toLowerCase()) {
                         console.log(userCommand.toLowerCase())
                         console.log(c.command.toLowerCase())
@@ -65,25 +62,25 @@
                             document.getElementById("game-screen").src = c.image
                             //Sette solved til true for denne kommandoen
                             c.solved = true
+                            //Hvis vi er på steg 4 og kommandoen er riktig, skal vi ikke bytte bilde. Derfor gjør vi en liten tekstbeskjed synlig, slik at brukeren vet at noe har skjedd
                             if(c.step === 4) {
                                 document.getElementById("strawMessage").style.display = "block"
                             } else {
                                 document.getElementById("strawMessage").style.display = "none"
                             }
+                            //Hvis index til denne kommandoen er den samme som siste index i kommandoarrayen er spillet ferdig. Da gjør vi gratulerer-meldingen synlig.
                             if(index === commands.length - 1) {
                                 document.getElementById("winMessage").style.display = "block"
                             }
                         }
-                        console.log(commands)
                     }
                 })
             }
-            //EventListener for å sjekke knappetrykk eller Enter-trykk:
+            //EventListener for å sjekke om knappen er trykket. Vi bruker event.preventDefault for å hindre nettsiden i å lastes inn på nytt når knappen trykkes.
             document.getElementById("command-button").addEventListener("click", function(event) {
                 event.preventDefault()
                 checkCommand()
             })
-            
         </script>
     </body>
 </html>
