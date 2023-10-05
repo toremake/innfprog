@@ -52,16 +52,25 @@
                 //Finn siste avsluttende </p>. Legg til <p> etter denne avsluttende </p>-tagen, 
                 //og en </p> på slutten av setningen
                 const text = document.getElementById("text").innerHTML
+                //Bruk .split("</p>") for å dele opp tekststrengen i en array.
+                //Den fjerner </p> og lager et nytt element av teksten på hver side av </p>-tagen
                 const textArray = text.split("</p>")
+                //Gjør klar en HTML-variabel
                 let newText = ""
+                //Gå gjennom alle tekstbitene vi laget med .split("</p>")
                 textArray.map((s) => {
+                    //Vi må sjekke om de tre første tegnene i array-elementet er <p>.
+                    //Hvis de er det, må vi avslutte array-elementet med </p> for å få gyldig HTML
                     if(s.substring(0,2) === "<p>") {
                         newText += s + "</p>"
                     } else {
+                        //Hvis ikke de første tegnene er <p>, må vi legge på både <p> på starten og
+                        //</p> på slutten av array-elementet
                         newText += "<p>" + s + "</p>"
                     }
                 })
                 console.log(textArray)
+                //Når vi har bygget HTML-en med tekst og p-tager, skriver vi den tilbake til #text
                 document.getElementById("text").innerHTML = newText
             }
         })
