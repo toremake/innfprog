@@ -115,7 +115,7 @@
             document.getElementById("functions").innerHTML = notebook.functions
         }
 
-        //Funksjon for å skrive ut oppdatering til et element:
+        //WS2, Oppgave 4: Funksjon for å skrive ut oppdatering til et element:
         function updateSingleStaticUI(elementid, value) {
             document.getElementById(elementid).innerHTML = value
         }
@@ -123,23 +123,31 @@
         //Kjøre (kalle) funksjonen for utskrift:
         updateStaticUI()
 
-        //Testkjøring av funksjon for å oppdatere ett element:
+        //WS2, Oppgave 4: Testkjøring av funksjon for å oppdatere ett element:
         updateSingleStaticUI("playerName", "TESTNAVN")
 
-        //Lage funksjon for å vise/skjule #notebook
+        //Lage funksjon for å vise/skjule elementer
         function toggleVisibility(elementid) {
-            //Finne alle elementer som kan påvirkes (.hideable)
+            /* Steg en:
+             * Finne alle elementer som har klassen .hideable. Dette gjør vi med
+             * metoden querySelectorAll: https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelectorAll
+             * Deretter skjuler vi alle disse, og setter klassen .hidden på alle elementene
+             * unntatt det elementet vi ønsker å skjule/vise
+             */
             const hideables = document.querySelectorAll(".hideable")
-            console.log(hideables)
-            /*hideables.map((hideable) => {
-                hideable.style.display = "none"
-            })*/
+            
             for(let index = 0; index < hideables.length; index++) {
                 hideables[index].style.display = "none"
                 if(hideables[index].id != elementid) {
-                    hideabels[index].classList.add("hidden")
+                    hideables[index].classList.add("hidden")
                 }
             }
+
+            /* Steg 2:
+             * Deretter må vi sjekke om elementet vi har valgt skal skjules eller vises.
+             * Hvis det har klassen .hidden, er det skjult, og skal vises
+             * Hvis ikke, er det synlig, og skal skjules:
+             */
             const element = document.getElementById(elementid)
             if(element.classList.contains("hidden")) {
                 element.style.display = "block"
@@ -161,7 +169,7 @@
             }*/
         }
 
-        //Lytte etter tastaturtrykk
+        //WS2, Oppg. 3: Lytte etter tastaturtrykk
         document.addEventListener("keydown", function(Event) {
             //Sjekke om tasten som er trykket er N:
             if(Event.key === "n") {
@@ -173,7 +181,7 @@
             }
         })
 
-        //Lytte etter klikk på notebook- og info-knappene:
+        //WS2, Oppg. 2: Lytte etter klikk på notebook- og info-knappene:
         document.getElementById("notebookToggler").addEventListener("click", function(Event) {
             toggleVisibility("notebook")
         })

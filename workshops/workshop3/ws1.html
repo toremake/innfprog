@@ -32,7 +32,7 @@
     </header>
     <main>
         
-        <section id="notebook" class="hideable">
+        <section id="notebook">
             <div id="notebook-page">
                 
                 <h2>Notater</h2>
@@ -40,29 +40,27 @@
                     <tr>
                         <td><img src="icons/variable.svg" alt="" /></td>
                         <td>Variabler</td>
-                        <td>
-                            <span id="variables">0</span> 
-                        </td>
+                        <td>0</td>
                     </tr>
                     <tr>
                         <td><img src="icons/array.svg" alt="" /></td>
                         <td>Arrayer</td>
-                        <td><span id="arrays">1</span></td>
+                        <td>1</span></td>
                     </tr>
                     <tr>
                         <td><img src="icons/loop.svg" alt="" /></td>
                         <td>Løkker</td>
-                        <td><span id="loops">2</span></td>
+                        <td>2</td>
                     </tr>
                     <tr>
                         <td><img src="icons/function.svg" alt="" /></td>
                         <td>Funksjoner</td>
-                        <td><span id="functions">8</span></td>
+                        <td>1</td>
                     </tr>
                 </table>
             </div>
         </section>
-        <section id="info" class="hidden hideable">
+        <section id="info" class="hidden">
             <div id="info-page">
                 <h2>Info / Hvordan spille C<sup>3</sup></h2>
                 <p>Målet med spiller er at programmeringsstudenten Fortran <span class="illustration">(<img src="icons/fortran.svg" />)</span> skal samle programmeringskonseptene variabler <span class="illustration">(<img src="icons/variable.svg" />)</span>, arrayer <span class="illustration">(<img src="icons/array.svg" />)</span>, løkker <span class="illustration">(<img src="icons/loop.svg" />)</span> og funksjoner <span class="illustration">(<img src="icons/function.svg" />)</span> i kladdeboka <span class="illustration">(<img src="icons/notebook.svg" />)</span> si.</p>
@@ -78,108 +76,16 @@
     <script>
         //PREPARE GAME CONFIG AND VARIABLES
         //TODO: config
-        const gameConfig = {
-            player: "Marius",
-            energy: 10,
-            points: 50,
-            duration: 123
-        }
        
         //TODO: notebook
-        const notebook = {
-            variables: 3,
-            arrays: 17,
-            loops: 5,
-            functions: 3
-        }
-
         
 
+        //TODO: print playerinfo to HTML
+        
+        //TODO: print notebook info to HTML
+
         //(BONUS) TODO: function for all prints
-        function updateStaticUI() {
-            //TODO: print playerinfo to HTML
-            //Tas vekk pga oppg 5: document.getElementById("playerName").innerHTML = gameConfig.player
-            document.getElementById("energy").innerHTML = gameConfig.energy
-            document.getElementById("points").innerHTML = gameConfig.points
-            document.getElementById("duration").innerHTML = gameConfig.duration
-            if(gameConfig.player === "") {
-                document.getElementById("playerName").innerHTML = "Waiting for player"
-            } else {
-                document.getElementById("playerName").innerHTML = gameConfig.player
-            }
-
-            //TODO: print notebook info to HTML
-            document.getElementById("variables").innerHTML = notebook.variables
-            document.getElementById("arrays").innerHTML = notebook.arrays
-            document.getElementById("loops").innerHTML = notebook.loops
-            document.getElementById("functions").innerHTML = notebook.functions
-        }
-
-        //Funksjon for å skrive ut oppdatering til et element:
-        function updateSingleStaticUI(elementid, value) {
-            document.getElementById(elementid).innerHTML = value
-        }
-
-        //Kjøre (kalle) funksjonen for utskrift:
-        updateStaticUI()
-
-        //Testkjøring av funksjon for å oppdatere ett element:
-        updateSingleStaticUI("playerName", "TESTNAVN")
-
-        //Lage funksjon for å vise/skjule #notebook
-        function toggleVisibility(elementid) {
-            //Finne alle elementer som kan påvirkes (.hideable)
-            const hideables = document.querySelectorAll(".hideable")
-            console.log(hideables)
-            /*hideables.map((hideable) => {
-                hideable.style.display = "none"
-            })*/
-            for(let index = 0; index < hideables.length; index++) {
-                hideables[index].style.display = "none"
-                if(hideables[index].id != elementid) {
-                    hideabels[index].classList.add("hidden")
-                }
-            }
-            const element = document.getElementById(elementid)
-            if(element.classList.contains("hidden")) {
-                element.style.display = "block"
-                element.classList.remove("hidden")
-            } else {
-                element.style.display = "none"
-                element.classList.add("hidden")
-            }
-
-            //få tak i #notebook
-            /*const element = document.getElementById(elementid)
-            //sjekke om klassen hidden finnes:
-            if(element.classList.contains("hidden") === true) {
-                element.style.display = "block"
-                element.classList.remove("hidden")
-            } else {
-                element.style.display = "none"
-                element.classList.add("hidden")
-            }*/
-        }
-
-        //Lytte etter tastaturtrykk
-        document.addEventListener("keydown", function(Event) {
-            //Sjekke om tasten som er trykket er N:
-            if(Event.key === "n") {
-                toggleVisibility("notebook")
-            }
-            //Sjekke om tasten som er trykket er I:
-            if(Event.key === "i") {
-                toggleVisibility("info")
-            }
-        })
-
-        //Lytte etter klikk på notebook- og info-knappene:
-        document.getElementById("notebookToggler").addEventListener("click", function(Event) {
-            toggleVisibility("notebook")
-        })
-        document.getElementById("infoToggler").addEventListener("click", function(Event) {
-            toggleVisibility("info")
-        })
+        
     </script>
 </body>
 </html>
