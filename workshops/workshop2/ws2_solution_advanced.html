@@ -93,7 +93,27 @@
             functions: 3
         }
 
-        
+        //WS2, OPPG 5: FUNKSJON FOR Å OPPDATERE EN KONFIGURASJONSVERDI
+        function changeConfigValue(config, value) {
+            if(config === "energy") {
+                gameConfig.energy = gameConfig.energy + value
+            }
+            if(config === "points") {
+                gameConfig.points = gameConfig.points + value
+            }
+            if(config === "duration") {
+                gameConfig.duration = gameConfig.duration + value
+            }
+
+            config === "variables" ? notebook.variables = notebook.variables + value : null
+            config === "arrays" ? notebook.arrays = notebook.arrays + value : null
+            config === "loops" ? notebook.loops = notebook.loops + value : null
+            config === "functions" ? notebook.functions = notebook.functions + value : null
+
+            console.log(gameConfig.points)
+        }
+
+        changeConfigValue("points", -1)
 
         //(BONUS) TODO: function for all prints
         function updateStaticUI() {
