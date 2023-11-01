@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karakterkalkulator</title>
+    <style>
+        body {
+            display: flex; 
+            justify-content: center;
+            align-items: center;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            font-size: 18px;
+        }
+        main {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 1rem;
+        }
+        section {
+            padding: 1rem;
+            min-width: 400px;
+        }
+        ul {
+            line-height: 1.5rem;
+        }
+        input {
+            border: none;
+            padding: .2rem;
+            display: inline-block;
+            width: 3rem;
+            font-size: 1rem;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        #score {
+            background: silver;
+        }
+        #result {
+            width: 100%;
+            align-self: flex-end;
+            background: green;
+            color: white;
+        }
+        #result span {
+            font-size: 2rem;
+        }
+        button {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            font-weight: 500;
+            background: lightyellow;
+            color: darkolivegreen;
+            border: 1px solid darkolivegreen;
+            padding: 1rem;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <section id="info">
+            <h2>Oppgaver, krav og vekt</h2>
+            <ul>
+                <li><strong>Oppgave 1</strong><br />Vekt: 20%<br />Totalt antall krav: 10<br />Minimumskrav: 2</li>
+                <li><strong>Oppgave 2</strong><br />Vekt: 30%<br />Totalt antall krav: 12<br />Minimumskrav: 4</li>
+                <li><strong>Oppgave 3</strong><br />Vekt: 50%<br />Totalt antall krav: 18<br />Minimumskrav: 4</li>
+            </ul>
+        </section>
+        <section id="score">
+            <h2>Dine løste krav</h2>
+            <p><strong>Oppgave 1</strong></p>
+            <p>Løst <input type="number" value="0" class="taskcount" id="task1count" /> av totalt 10 krav</p>
+            <p><strong>Oppgave 2</strong></p>
+            <p>Løst <input type="number" value="0" class="taskcount" id="task2count" /> av totalt 12 krav</p>
+            <p><strong>Oppgave 3</strong></p>
+            <p>Løst <input type="number" value="0" class="taskcount" id="task3count" /> av totalt 18 krav</p>
+            <button id="calculate">Beregn</button>
+        </section>
+        <section id="result">
+            <h3>Resultat:</h3>
+            <p id="result-formula">Fyll inn antall beståtte krav i skjemaet over og klikk Beregn-knappen...</p>
+        </section>
+    </main>
+
+    <script>
+        //Totalt vektet
+        let total = 0
+        //Karakterskala
+        const grades = [
+            {grade: "F", treshold: 0},
+            {grade: "E", treshold: 25},
+            {grade: "D", treshold: 44},
+            {grade: "C", treshold: 68},
+            {grade: "B", treshold: 88},
+            {grade: "A", treshold: 100}
+        ]
+        //Formel: (Vekt 1 i % * Prosent 1) + (Vekt 2 i % * Prosent 2) + (Vekt 3 i % * Prosent 3) 
+        //Eksempel: Oppgave 1, 20% vekt: (0.2 * (beståtte krav / totale krav * 100))
+        document.getElementById("calculate").addEventListener("click", (event) => {
+            const task1 = document.getElementById("task1count").value
+            const task2 = document.getElementById("task2count").value
+            const task3 = document.getElementById("task3count").value
+            total = eval(`(0.2 * (${task1} / 10 * 100)) + (0.3 * (${task2} /12 * 100)) + (0.5 * (${task3} / 18 * 100))`)
+            console.log(total)
+            //Filter out unreachable grades
+            const availableGrades = grades.filter((g) => g.treshold < total)
+            const grade = availableGrades[availableGrades.length - 1].grade
+            console.log(grade)
+            //Print result
+            document.getElementById("result-formula").innerHTML = `<p>Formel: 20% * (${task1} av 10 krav) + 30% * (${task2} av 12 krav) + 50% * (${task3} av 18krav)=<br /> Totalt ${total.toFixed(2)}% av 100% =<br /><span>Karakter ${grade}</span></p>`
+        })
+    </script>
+</body>
+</html>
