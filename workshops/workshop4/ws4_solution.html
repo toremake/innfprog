@@ -88,7 +88,7 @@
             energy: 10,
             points: 50,
             duration: 0,
-            gameState: "active" //mulige states: active, paused, gameover, completed
+            gameState: "active" //mulige states: active, reading, paused, gameover, completed
         }
        
         //TODO: notebook
@@ -133,7 +133,7 @@
         updateStaticUI()
 
         //WS2, Oppgave 4: Testkjøring av funksjon for å oppdatere ett element:
-        updateSingleStaticUI("playerName", "TESTNAVN")
+        //updateSingleStaticUI("playerName", "TESTNAVN")
 
         //Lage funksjon for å vise/skjule elementer
         function toggleVisibility(elementid) {
@@ -150,6 +150,7 @@
             } else {
                 element.style.display = "none"
                 element.classList.add("hidden")
+                //WS4, oppg 4: stoppe teller når infoskjermen er oppe
                 if(elementid === "info") {
                     gameConfig.gameState = "active"
                 }
@@ -230,10 +231,12 @@
             speed: 3,
             x: canvas.width / 2 - 20,
             y: canvas.height / 2 - 40,
+            //WS4, Oppg 2
             moveLeft: false,
             moveRight: false,
             moveUp: false,
             moveDown: false,
+            //WS4, Oppg 5
             width: 40,
             height: 80
         }
@@ -248,8 +251,9 @@
 
         //WS3, Oppg 5: Liste med elementtyper:
         const itemTypes = ["variable", "array", "loop", "function", "bug", "energydrink"]
-        const randomItem = itemTypes[Math.floor(Math.random() * itemTypes.length)]
-        console.log(randomItem)
+        //De to neste linjene kommenteres ut, siden de erstattes av WS4, oppg 5:
+        //const randomItem = itemTypes[Math.floor(Math.random() * itemTypes.length)]
+        //console.log(randomItem)
 
         //WS4, oppg 5:
         const items = [
@@ -290,16 +294,20 @@
             ctx.closePath()
         }
 
-        //Bonus: Funksjon for out of bounds-straff
+        //WS4, Bonus: Funksjon for out of bounds-straff
         function outOfBounds() {
+            //Trekk fra en energi
             gameConfig.energy = gameConfig.energy - 1
+            //Oppdater grensesnitt med nytt antall energi
             updateSingleStaticUI("energy", gameConfig.energy)
+            //Flytt Fortran til midten av canvaset
             fortran.x = canvas.width / 2 - fortran.width / 2
             fortran.y = canvas.height / 2 - fortran.height / 2
         }
 
         //WS4, Oppg 4: Sekundteller
         setInterval(function() {
+            //Hvis ikke spill er aktivt, skal ikke telleren oppdatere
             if(gameConfig.gameState === "active") {
                 gameConfig.duration = gameConfig.duration + 1
                 updateSingleStaticUI("duration", gameConfig.duration)
@@ -317,7 +325,9 @@
             //WS3: Oppg 2: Tegn opp Fortran
             fortranLoaded ? ctx.drawImage(fortranImage, fortran.x, fortran.y, fortran.width, fortran.height) : null
             //WS3, Oppg 5: Tegn opp item
+            //Kommentert ut for oppgave WS4 Oppg 5.
             //drawItem(randomItem, 100, 100)
+            //WS4, oppg 5: Gå gjennom liste med element-objekter og bruk drawItem for å skrive dem ut:
             items.map(element => drawItem(element.type, element.x, element.y, element.lifetime))
             //WS3, Oppg 3: Test: sjekker om spillet er pauset:
             if(gameConfig.gameState === "paused") {
@@ -333,17 +343,27 @@
 
                 if(gameConfig.gameState === "active") {
                     //WS4, oppg 1:
+                    //Hvis moveX er true, skal vi bevege fortran.speed antall pixler i den retningen
+                    //Hvis fortran er halvveis utenfor spillbrettet, skal han miste en energi og 
+                    //bli plassert i midten av spillbrettet (funksjon outOfBounds())
                     if(fortran.moveLeft === true) {
-                        fortran.x = fortran.x - fortran.speed 
+                        fortran.x = fortran.x - fortran.speed
+                        if(fotran.x <= 0 - (fortran.speed / 2)) {
+                            outOfBounds()
+                            fortran.moveLeft = false
+                        }
                     }
                     if(fortran.moveRight === true) {
                         fortran.x = fortran.x + fortran.speed
+                        if(fortran.x >= canvas.width - (fortran.width / 2)) {
+                            outOfBounds()
+                            fortran.moveRight = false
+                        }
                     }
                     if(fortran.moveUp === true) {
                         fortran.y = fortran.y - fortran.speed
                         //Bonus: Hvis fortran går utenfor canvas, skal han miste en energi og plasseres i midten av canvas
                         if(fortran.y <= 0 - (fortran.height / 2)) {
-                            console.log("Fortran er utenfor toppen")
                             outOfBounds()
                             fortran.moveUp = false
                         }
