@@ -255,6 +255,8 @@
         //const randomItem = itemTypes[Math.floor(Math.random() * itemTypes.length)]
         //console.log(randomItem)
 
+        
+        
         //WS4, oppg 5:
         const items = [
             {
@@ -276,7 +278,25 @@
                 lifetime: randomMinMax(4, 10)
             }
         ]
-        console.log(items)
+        
+        //WS5 Oppg 1: Funksjon for å legge nytt element inn i arrayen
+        function pushItem() {
+            items.push({
+                type: itemTypes[Math.floor(Math.random() * itemTypes.length)],
+                x: randomMinMax(10, canvas.width - 60),
+                y: randomMinMax(10, canvas.height - 60),
+                lifetime: randomMinMax(4, 10)
+            })
+        }
+
+        //WS5, oppg 1: Rekursiv funksjon for å opprette elementer
+        function createItem() {
+            console.log("createItem kjørt")
+
+            pushItem()
+            setTimeout(createItem, randomMinMax(2000, 6000))
+        }
+        createItem()
 
         //WS3, Oppg 5: Funksjon for å tegne et element
         function drawItem(type, x, y, lifetime) {
@@ -327,8 +347,7 @@
             //WS3, Oppg 5: Tegn opp item
             //Kommentert ut for oppgave WS4 Oppg 5.
             //drawItem(randomItem, 100, 100)
-            //WS4, oppg 5: Gå gjennom liste med element-objekter og bruk drawItem for å skrive dem ut:
-            items.map(element => drawItem(element.type, element.x, element.y, element.lifetime))
+            
             //WS3, Oppg 3: Test: sjekker om spillet er pauset:
             if(gameConfig.gameState === "paused") {
                 console.log("Spillet er pauset")
@@ -342,13 +361,15 @@
                 pauseText("Press P to pause")
 
                 if(gameConfig.gameState === "active") {
+                    //WS4, oppg 5: Gå gjennom liste med element-objekter og bruk drawItem for å skrive dem ut:
+                    items.map(element => drawItem(element.type, element.x, element.y, element.lifetime))
                     //WS4, oppg 1:
                     //Hvis moveX er true, skal vi bevege fortran.speed antall pixler i den retningen
                     //Hvis fortran er halvveis utenfor spillbrettet, skal han miste en energi og 
                     //bli plassert i midten av spillbrettet (funksjon outOfBounds())
                     if(fortran.moveLeft === true) {
                         fortran.x = fortran.x - fortran.speed
-                        if(fotran.x <= 0 - (fortran.speed / 2)) {
+                        if(fortran.x <= 0 - (fortran.speed / 2)) {
                             outOfBounds()
                             fortran.moveLeft = false
                         }
