@@ -85,18 +85,18 @@
         //TODO: config
         const gameConfig = {
             player: "Marius",
-            energy: 10,
-            points: 50,
+            energy: 1,
+            points: 0,
             duration: 0,
             gameState: "active" //mulige states: active, reading, paused, gameover, completed
         }
        
         //TODO: notebook
         const notebook = {
-            variables: 3,
-            arrays: 17,
-            loops: 5,
-            functions: 3
+            variables: 0,
+            arrays: 0,
+            loops: 0,
+            functions: 0
         }
 
         //Gjør jeg klar randomMinMax-funksjon
@@ -228,7 +228,7 @@
         
         //WS3, Oppg 3: Opptegning av Fortran
         const fortran = {
-            speed: 3,
+            speed: 6,
             x: canvas.width / 2 - 20,
             y: canvas.height / 2 - 40,
             //WS4, Oppg 2
@@ -255,43 +255,59 @@
         //const randomItem = itemTypes[Math.floor(Math.random() * itemTypes.length)]
         //console.log(randomItem)
 
-        //WS4, oppg 5:
+        
+        
+        //WS4, oppg 5: Oppdatert til en tom array i WS5, Oppg1
         const items = [
-            {
-                type: itemTypes[Math.floor(Math.random() * itemTypes.length)],
-                x: randomMinMax(10, canvas.width - 60),
-                y: randomMinMax(10, canvas.height - 60),
-                lifetime: randomMinMax(4, 10)
-            },
-            {
-                type: itemTypes[Math.floor(Math.random() * itemTypes.length)],
-                x: randomMinMax(10, canvas.width - 60),
-                y: randomMinMax(10, canvas.height - 60),
-                lifetime: randomMinMax(4, 10)
-            },
-            {
-                type: itemTypes[Math.floor(Math.random() * itemTypes.length)],
-                x: randomMinMax(10, canvas.width - 60),
-                y: randomMinMax(10, canvas.height - 60),
-                lifetime: randomMinMax(4, 10)
-            }
+
         ]
-        console.log(items)
+        
+        //WS5 Oppg 1: Funksjon for å legge nytt element inn i arrayen
+        function pushItem() {
+            if(gameConfig.gameState === "active") {
+                const elementType = itemTypes[Math.floor(Math.random() * itemTypes.length)]
+                items.push({
+                    type: elementType,
+                    x: randomMinMax(10, canvas.width - 60),
+                    y: elementType === "bug" ? canvas.height + 100 : randomMinMax(10, canvas.height - 60),
+                    lifetime: randomMinMax(4, 10),
+                    state: "active" //active, bug: collided, inactive, !bug: collected
+                })
+            }
+        }
+
+        //WS5 Oppg1: Lag mellom 2 og 5 elementer ved start av spillet
+        for(let itemCount = 1; itemCount <= randomMinMax(2, 5); itemCount++) {
+            pushItem()
+        }
+
+        //WS5, oppg 1: Rekursiv funksjon for å opprette elementer
+        function createItem() {
+            console.log("createItem kjørt")
+
+            pushItem()
+            setTimeout(createItem, randomMinMax(2000, 6000))
+        }
+        createItem()
 
         //WS3, Oppg 5: Funksjon for å tegne et element
         function drawItem(type, x, y, lifetime) {
             const itemImage = new Image()
             itemImage.src = "icons/" + type + ".svg"
             ctx.drawImage(itemImage, x, y)
-            //Lage sekundtellersirkel
-            ctx.beginPath()
-            ctx.arc(x+5, y+5, 10, 0, 2 * Math.PI)
-            ctx.fillStyle = "red"
-            ctx.fill()
-            ctx.font = "12px Verdana"
-            ctx.fillStyle = "white"
-            ctx.fillText(lifetime, x+1, y+8)
-            ctx.closePath()
+
+            if(type !== "bug") {
+                //Lage sekundtellersirkel
+                ctx.beginPath()
+                ctx.arc(x+5, y+5, 10, 0, 2 * Math.PI)
+                ctx.fillStyle = "red"
+                ctx.fill()
+                ctx.font = "12px Verdana"
+                ctx.fillStyle = "white"
+                ctx.fillText(lifetime, x+1, y+8)
+                ctx.closePath()
+            }
+            
         }
 
         //WS4, Bonus: Funksjon for out of bounds-straff
@@ -311,6 +327,11 @@
             if(gameConfig.gameState === "active") {
                 gameConfig.duration = gameConfig.duration + 1
                 updateSingleStaticUI("duration", gameConfig.duration)
+
+                //WS5, Oppg 1.3: Trekke fra levetid på alle elementer
+                items.map((element) => {
+                    element.lifetime--
+                })
             }
         }, 1000)
 
@@ -322,13 +343,16 @@
         function renderFrames() {
             //Tømme frame
             ctx.clearRect(0, 0, canvas.width, canvas.height)
+            //WS5, Oppg 3: Game over
+            if(gameConfig.energy <= 0) {
+                gameConfig.gameState = "gameover"
+            }
             //WS3: Oppg 2: Tegn opp Fortran
             fortranLoaded ? ctx.drawImage(fortranImage, fortran.x, fortran.y, fortran.width, fortran.height) : null
             //WS3, Oppg 5: Tegn opp item
             //Kommentert ut for oppgave WS4 Oppg 5.
             //drawItem(randomItem, 100, 100)
-            //WS4, oppg 5: Gå gjennom liste med element-objekter og bruk drawItem for å skrive dem ut:
-            items.map(element => drawItem(element.type, element.x, element.y, element.lifetime))
+            
             //WS3, Oppg 3: Test: sjekker om spillet er pauset:
             if(gameConfig.gameState === "paused") {
                 console.log("Spillet er pauset")
@@ -337,18 +361,90 @@
                 ctx.font = "80px Arial"
                 ctx.fillStyle = "red"
                 ctx.fillText("Paused", 270, 300)
+            } else if(gameConfig.gameState === "gameover") {
+                ctx.font = "80px Arial"
+                ctx.fillStyle = "red"
+                ctx.fillText("Game Over!", 270, 270)
             } else {
                 console.log("Spillet er i gang")
                 pauseText("Press P to pause")
 
                 if(gameConfig.gameState === "active") {
+                    //Bonus: Alltid ha elementer i spill
+                    const filteredItems = items.filter(element => element.state === "active").length
+                    if(filteredItems < 2) {
+                        pushItem()
+                        pushItem()
+                    }
+                    //WS4, oppg 5: Gå gjennom liste med element-objekter og bruk drawItem for å skrive dem ut:
+                    items.map((element) => {
+                        if(element.state === "active") {
+                            if(element.type === "bug") {
+                                element.y = element.y - 5
+                                //Stoppe bug etter den har løpt over skjermen
+                                if(element.y < 0 - 100) {
+                                    element.state = "dead"
+                                }
+                            } else {
+                                //element.lifetime > 0 ? drawItem(element.type, element.x, element.y, element.lifetime) : null
+                                element.lifetime < 0 ? element.state = "lost" : null
+                            }
+
+                            drawItem(element.type, element.x, element.y, element.lifetime)
+                            
+                            //WS5, Oppg 1.3: Sjekke om Fortran befinner seg på plassen til elementet
+                            if(
+                                element.x + 50 > fortran.x &&
+                                element.x < fortran.x + fortran.width && 
+                                element.y + 50 > fortran.y && 
+                                element.y < fortran.y + fortran.height
+                            ) {
+                                console.log("Fortran har truffet " + element.type)
+                                //Hvis elementet skal plukkes opp, skal det forsvinne, legges til notatboka og gi poeng
+                                if(element.type !== "bug") {
+                                    element.state = "collected"
+
+                                    if(element.type === "variable") {
+                                        notebook.variables++
+                                        updateSingleStaticUI("variables", notebook.variables)
+                                    }
+                                    if(element.type === "loop") {
+                                        notebook.loops++
+                                        updateSingleStaticUI("loops", notebook.loops)
+                                    }
+                                    if(element.type === "array") {
+                                        notebook.arrays++
+                                        updateSingleStaticUI("arrays", notebook.arrays)
+                                    }
+                                    if(element.type === "function") {
+                                        notebook.functions++
+                                        updateSingleStaticUI("functions", notebook.functions)
+                                    }
+                                    if(element.type === "energydrink") {
+                                        gameConfig.energy++
+                                        updateSingleStaticUI("energy", gameConfig.energy)
+                                    }
+
+                                    gameConfig.points++
+                                    updateSingleStaticUI("points", gameConfig.points)
+                                } else {
+                                    //Hvis elementet er en bug, fortran miste energy, bug forsvinne
+                                    gameConfig.energy--
+                                    updateSingleStaticUI("energy", gameConfig.energy)
+                                    element.state = "hit"
+                                }
+                            }
+                        }
+
+                        
+                    })
                     //WS4, oppg 1:
                     //Hvis moveX er true, skal vi bevege fortran.speed antall pixler i den retningen
                     //Hvis fortran er halvveis utenfor spillbrettet, skal han miste en energi og 
                     //bli plassert i midten av spillbrettet (funksjon outOfBounds())
                     if(fortran.moveLeft === true) {
                         fortran.x = fortran.x - fortran.speed
-                        if(fotran.x <= 0 - (fortran.speed / 2)) {
+                        if(fortran.x <= 0 - (fortran.speed / 2)) {
                             outOfBounds()
                             fortran.moveLeft = false
                         }
