@@ -30,7 +30,7 @@
         //RequestAnimationFrame: automatiser nye bildetegninger
         const requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || window.mozRequestAnimationFrame
 
-        //Definerer startpunkter:
+        //Definerer startpunkter forsirkelen:
         const circle = {
             x: 100,
             y: 100,
@@ -48,17 +48,21 @@
             ctx.fill()
             ctx.closePath()
             
+            //Hvis sirkelen ikke har nådd høyre vegg, skal vi manipulere x
             if(circle.x < c.width - circle.r) {
                 circle.x = circle.x + 5
             }
+            //Hvis sirkelen har nådd høyre vegg, skal den ramle ned (manipulere y)
             if(circle.x === c.width - circle.r) {
                 if(circle.y < c.height - circle.r) {
                     circle.y = circle.y + 10
                 } else {
+                    //Når sirkelen har nådd bunnen av canvas, setter vi en fast y for å "holde" sirkelen til bunnen
                     circle.y = c.height - circle.r
                 }
             }
 
+            //Testutskrift for å bekrefte at requestAnimationFrame kjører
             console.log("requestAnimationFrame fungerer")
             //Rekursivt kall:
             requestAnimationFrame(frames)  
