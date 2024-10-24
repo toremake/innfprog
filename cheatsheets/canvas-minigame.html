@@ -32,15 +32,23 @@
 
         //Spillkonfigurasjon:
         const game = {
-            speed: 3
+            speed: 3,
+            count: 0
         }
         
-        //Definerer startpunkter forsirkelen:
+        //Definerer startpunkter for helten:
         const hero = {
             x: 100,
             y: 100,
             w: 15,
             h: 15
+        }
+        //Definer gullfjellet:
+        const goldmountain = {
+            x: c.width / 2 - 25,
+            y: c.height / 2 - 25,
+            w: 50,
+            h: 50
         }
 
         //Definerer variabler for å sjekke om en retning er aktiv:
@@ -95,6 +103,11 @@
             ctx.closePath()
         }
 
+        //Funksjon for randomisering
+        function randomMinMax(min, max) {
+            return Math.floor(Math.random() * (max - min + 1) + min)
+        }
+
         //Rekursiv funksjon som kaller seg selv avhengig av skjerm/nettleser den vises i
         function frames() {
             //Tøm frame for ny opptegning:
@@ -103,7 +116,11 @@
             //Tegne helten
             drawRect(hero.x, hero.y, hero.w, hero.h, "#6ea100")
             //Tegne hinder
-            drawRect(c.width / 2 - 25, c.height / 2 - 25, 50, 50, "orange")
+            drawRect(goldmountain.x, goldmountain.y, goldmountain.w, goldmountain.h, "orange")
+            //Tegne/skrive ut count:
+            ctx.font = "30px Arial"
+            ctx.fillStyle = "#000000"
+            ctx.fillText(game.count, 10, 60)
 
             //Sjekker etter bevegelse:
             right ? hero.x = hero.x + game.speed : null
@@ -123,6 +140,19 @@
             }
             if(hero.y > c.height) {
                 hero.y = 0
+            }
+
+            //Sjekker om helt kolliderer med orange firkant
+            if(
+                hero.x + hero.w > goldmountain.x && 
+                hero.x < goldmountain.x + goldmountain.w && 
+                hero.y + hero.h > goldmountain.y && 
+                hero.y < goldmountain.y + goldmountain.h
+            ) {
+                console.log(game.count)
+                hero.x = randomMinMax(0, c.width - hero.w)
+                hero.y = randomMinMax(0, c.height - hero.h)
+                game.count = game.count + 1
             }
             
 
