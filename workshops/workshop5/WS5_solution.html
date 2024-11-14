@@ -314,13 +314,16 @@
 
         function drawElements() {
             //Har vi liv og får lov til å spille?
+            //Hvis vi ikke har energi, skal vi bare skrive ut game over...
             if(gameConfig.energy <= 0) {
                 ctx.beginPath()
                 ctx.font = "100px Arial"
                 ctx.fillStyle = "red"
                 ctx.fillText("GAME OVER", 50, 300)
                 ctx.closePath()
-            } else {
+            } 
+            //...ellers skal vi gjøre alle opptegninger og sjekker:
+            else {
             ctx.clearRect(0, 0, canvas.width, canvas.height)
             console.log("requestAnimationFrame kjører")
 
@@ -340,11 +343,12 @@
                 }
 
                 //WS4, bonusoppgave:
+                //Sjekker om Fortran er halvveis på utsiden av Canvaset. Hvis han er det skal han...
                 if(fortran.x < -10 || fortran.x > canvas.width + 10 || fortran.y < -21 || fortran.y > canvas.height + 21) {
-                    //miste et liv:
+                    //...miste et liv...
                     gameConfig.energy--
                     updateSingleStaticUI("energy", gameConfig.energy)
-                    //plassere fortran midt i spillbrettet
+                    //... og bli plassert midt på spillbrettet.
                     fortran.x = canvas.width / 2 - 10
                     fortran.y = canvas.height / 2 - 21
                 }
@@ -380,20 +384,28 @@
                 }
             })*/
             //WS4, oppg 5 med .filter()
+            //Vi bruker .filter() til å filtrere arrayen items
+            //filteret henter kun elementer som har levetid, ikke er fanget og bugs.
+            //Deretter bruker vi .map() for å gå gjennom alle elementene som skal tegnes.
             if(gameConfig.gamePaused === false) {
 
-            items.filter((item) => (item.lifetime > 0 && item.caught === false) || item.type === "bug").map((item, index) => {
+            items
+            .filter((item) => (item.lifetime > 0 && item.caught === false) || item.type === "bug")
+            .map((item, index) => {
+                //Hvis elementet er bug, skal den bevege seg oppover skjermen.
                 if(item.type === "bug") {
                     item.y = item.y - 3
-
-                    //Hvis bug er mer enn 100 pixler på utsiden av spillbrettet
+                    //Hvis bug er mer enn 100 pixler på utsiden av spillbrettet...
                     if(item.y < -100) {
-                        //..sletter vi dem fra arrayen items
+                        //...sletter vi dem fra arrayen items
                         items.splice(index, 1)
                     }
                 }
-                //sjekke om fortran kolliderer med elementet
+                //Vi må sjekke om fortran kolliderer med elementet
                 if(fortran.x + 20 > item.x && fortran.x < item.x + 48 && fortran.y + 42 > item.y && fortran.y < item.y + 48) {
+                    //Hvis det er en kollisjon mellom elementet og fortran, skal vi
+                    //- sette det til fanget (caught === true)
+                    //- oppdatere verdier i spillet (antall elementer, poeng)
                     if(item.type === "bug" && item.caught === false) {
                         item.caught = true
                         items.splice(index, 1)
@@ -438,7 +450,7 @@
                         updateSingleStaticUI("points", gameConfig.points)
                     }
                 }
-
+                //Tegn ut elementet
                 drawItem(item.type, item.x, item.y, item.lifetime)
             })
             }
