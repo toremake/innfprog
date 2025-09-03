@@ -8,12 +8,12 @@
 <body>
     <!-- HTML-element til utskrift -->
     <ul id="profiles"></ul>
-
-
+    
     <script>
         //Lagrer HTML-elementene i variabler. Dette gjør det lettere å referere seinere
         const profiles = document.getElementById("profiles")
 
+        //Oppretter variabelen lecturers, denne inneholder en array[] med objekter{}
         const lecturers = [
             {
                 name: "Marius Akerbæk",
@@ -56,10 +56,9 @@
         //         <p>Kontor: ${lecturer.office}</p>
         //         <a href="mailto:${lecturer.email}">Skriv e-post til ${lecturer.name}</a>
         //         </li>`
-        //     console.log(lecturer)
         // })
 
-        //Filtrerer forelesere basert på fødselsår
+        //Filtrerer forelesere basert på fødselsår og skriver ut HTML-strukturen til elementet vi har lagret i variabelen profiles
         lecturers.filter(lec => lec.birthyear >= 1990).map(lecturer => {
             profiles.innerHTML += `
             <li>

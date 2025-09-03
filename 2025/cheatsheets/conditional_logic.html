@@ -32,6 +32,7 @@
 
         let utskrift = document.getElementById("doormsg")
 
+        //HVIS døren er åpen skriver vi ut "Ja". HVIS døren er låst og spiller har "key" i backpack, skriver vi ut "Ja". Ellers skriver vi ut "Nei".
         if(door_locked === false){
             utskrift.innerHTML = "Ja"
         } else {
@@ -42,9 +43,10 @@
             }
         }
 
+        //Lagrer HTML-elementet i variabel for å lettere kunne referere seinere.
         let retiremsg = document.getElementById("retire")
 
-        //Sjekk av mulig pensjonsalder
+        //Sjekk av mulig pensjonsalder.
         if(age >= 62 && age < 67) {
             retiremsg.innerHTML = "Du kan gå av med AFP"
         } else if(age >= 67){

@@ -11,25 +11,20 @@
     <h3>Filmarray (<span id="moviecount">0</span> filmer)</h3>
     <p>Film på index <span id="movieindex">#</span>: <span id="movietitle">Ingen film funnet</span></p>
 
-    <span id="hei">Hei </span>
     <script>
         //TODO: Opprette en array med filmtitler
         const moviearray = ["Ringenes Herre", "Star Wars Episode 1: Phantom Menace", "Titanic", "Nobody", "John Wick 4", "Howls Moving Castle", "Look Back", "No Country For Old Men", "Don't Mess With the Zohan"]
 
         //TODO: Sorter array alfabetisk A-Å
-        // moviearray.sort()
-
-        // Reverserer array
-        // moviearray.reverse()
-
         
-        //TODO: Legg til en filmtittel i listen
+        //Bruker .push() for å legge til element i listen. Denne metoden legger til på SLUTTEN av listen. Pass på hvor i koden du sorterer.
         moviearray.push("Tetris")
 
-        //Sorterer og reverserer med én enkelt kodelinje
+        //Sorterer og reverserer med én enkelt kodelinje. OBS!! .reverse() reverserer array som den er, den sorterer ikke i alfabetisk rekkefølge.
         moviearray.sort().reverse()
 
-        //TODO: Fjern én film fra listen
+        //Bruker metoden .splice() for å fjerne et element fra listen.
+        //I dette tilfellet tar metoden to parametere, 3 og 1. Den første parameteren(3) er hvilken index vi skal begynne å fjerne, den andre parameteren(1) er hvor mange vi skal fjerne.
         moviearray.splice(3, 1)
 
         const movieexists = moviearray.includes("Tetris")
@@ -43,7 +38,6 @@
         document.getElementById("movieindex").innerHTML = index
         document.getElementById("movietitle").innerHTML = moviearray[index]
 
-        const hei = document.getElementById("hei")
 
         console.log(hei)
 
