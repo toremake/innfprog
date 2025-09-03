@@ -6,7 +6,7 @@
     <title>Conditional Logic - Betinget logikk</title>
 </head>
 <body>
-    <h2>Er du gammel nok til å kjøre bil?</h2>
+    <h2>Er du kvalifisert til å ta førerkort?</h2>
     <p id="carmessage"></p>
     <h2>Kan spilleren åpne døren?</h2>
     <p id="doormessage">Velg dør for å sjekke</p>
@@ -14,7 +14,7 @@
     <p id="retire"></p>
 
     <script>
-        const age = 41
+        const age = 35
         const passed = true
         //If-test for å sjekke om vi er gamle nok:
         if(age >= 18 && passed === true) {
@@ -40,13 +40,15 @@
             }
         }
 
+        let retiremsg = document.getElementById("retire")
+
         //Sjekk av mulig pensjonsalder:
         if(age >= 62 && age < 67) {
-            document.getElementById("retire").innerHTML = "Du kan gå av med AFP."
+            retiremsg.innerHTML = "Du kan gå av med AFP."
         } else if(age >= 67) {
-            document.getElementById("retire").innerHTML = "Du kan gå av med full pensjon."
+            retiremsg.innerHTML = "Du kan gå av med full pensjon."
         } else {
-            document.getElementById("retire").innerHTML = `Du kan gå av med AFP om ${62 - age} år, og full pensjon om ${67 - age} år.`
+            retiremsg.innerHTML = `Du kan gå av med AFP om ${62 - age} år, og full pensjon om ${67 - age} år.`
         }
     </script>
 </body>
