@@ -26,12 +26,13 @@
             document.getElementById("carmsg").innerHTML = "Nei"
         }
 
-        //Sjekk om dør er låst, eventuelt om spiller har nøkkel i sekken
+        //Deklarerer variablene door_locked med verdien true og backpack med verdien "key"
         const door_locked = true
         const backpack = "key"
-
+        
         let utskrift = document.getElementById("doormsg")
-
+        
+        //Sjekk om dør er låst, eventuelt om spiller har nøkkel i sekken
         //HVIS døren er åpen skriver vi ut "Ja". HVIS døren er låst og spiller har "key" i backpack, skriver vi ut "Ja". Ellers skriver vi ut "Nei".
         if(door_locked === false){
             utskrift.innerHTML = "Ja"

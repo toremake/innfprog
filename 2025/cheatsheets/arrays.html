@@ -12,34 +12,36 @@
     <p>Film på index <span id="movieindex">#</span>: <span id="movietitle">Ingen film funnet</span></p>
 
     <script>
-        //TODO: Opprette en array med filmtitler
+        //Oppretter en array med filmtitler
         const moviearray = ["Ringenes Herre", "Star Wars Episode 1: Phantom Menace", "Titanic", "Nobody", "John Wick 4", "Howls Moving Castle", "Look Back", "No Country For Old Men", "Don't Mess With the Zohan"]
 
-        //TODO: Sorter array alfabetisk A-Å
         
         //Bruker .push() for å legge til element i listen. Denne metoden legger til på SLUTTEN av listen. Pass på hvor i koden du sorterer.
         moviearray.push("Tetris")
 
-        //Sorterer og reverserer med én enkelt kodelinje. OBS!! .reverse() reverserer array som den er, den sorterer ikke i alfabetisk rekkefølge.
+        //Sorterer og reverserer med én enkelt kodelinje. 
+        // OBS!! .reverse() reverserer array som den er, den sorterer ikke i alfabetisk rekkefølge.
         moviearray.sort().reverse()
 
         //Bruker metoden .splice() for å fjerne et element fra listen.
         //I dette tilfellet tar metoden to parametere, 3 og 1. Den første parameteren(3) er hvilken index vi skal begynne å fjerne, den andre parameteren(1) er hvor mange vi skal fjerne.
         moviearray.splice(3, 1)
 
+        //Se etter en spesifikk film i listen
         const movieexists = moviearray.includes("Tetris")
         console.log("Finnes Tetris?", movieexists)
         
         console.log(moviearray)
 
+        //Skriv ut antall filmer til HTML-element med id="moviecount"
         document.getElementById("moviecount").innerHTML = moviearray.length
 
         let index = 4
+
         document.getElementById("movieindex").innerHTML = index
+        //Skriv ut film med spesifisert index til HTML-element med id="movietitle"
         document.getElementById("movietitle").innerHTML = moviearray[index]
 
-
-        console.log(hei)
 
 
         //Tallsortering
@@ -57,11 +59,8 @@
 
 
 
-        //TODO: Se etter en spesifikk film i listen
 
-        //TODO: Skriv ut antall filmer
 
-        //TODO: Skriv ut film med spesifisert index
     </script>
 </body>
 </html>
