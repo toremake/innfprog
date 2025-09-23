@@ -49,7 +49,6 @@
         document.getElementById("emailcontainer").innerHTML = createEmailLink("thoraho@hiof.no")
 
         //Funksjon for aldersutregning
-
         function ageCalculator(birthyear = 1983, year = 2026){
             const age = year - birthyear
             const date = new Date().getFullYear()
@@ -81,8 +80,6 @@
 
         ageCalculator(users[0].name, users[1].name)
 
-        console.log(Math.abs(-10))
-
         //Funksjon for å returnere tilfeldig tall mellom a og b
 
         function randomMinMax(a, b){
@@ -92,12 +89,6 @@
         console.log(randomMinMax(1, 1000))
 
 
-        function randomHexColor() {
-            return "#" + Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0");
-        }
-
-        // Eksempel bruk:
-        console.log(randomHexColor()); // f.eks. "#3fa2d7"
 
     </script>
 </body>
