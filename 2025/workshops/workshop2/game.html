@@ -77,7 +77,7 @@
         //PREPARE GAME CONFIG AND VARIABLES
         //TODO: config
         const gameConfig = {
-            playerName: "Jostein",
+            playerName: "",
             energy: 10,
             points: 4000,
             duration: 30
@@ -101,9 +101,9 @@
         //Vi kan lagre HTML-elementer i variabler for lettere testing/kontroll i logg.
         let playerNameHTML = document.getElementById("playerName")
 
-        if(gameConfig.player === ""){
+        if(gameConfig.playerName === ""){
             document.getElementById("playerName").innerHTML = "Waiting for player..."
-            // Her tvinger vi gameConfig-verdiene til å være 0 dersom spillernavn ikke er "logget inn"
+            // Her tvinger vi gameConfig-verdiene til å være 0 dersom spiller ikke er "logget inn"
             for(key in gameConfig){
                 gameConfig[key] = 0
             }
@@ -111,7 +111,7 @@
                 notebook[key] = 0
             }
         } else {
-            document.getElementById("playerName").innerHTML = gameConfig.player
+            document.getElementById("playerName").innerHTML = gameConfig.playerName
         }
 
         document.getElementById("energy").innerHTML = gameConfig.energy
