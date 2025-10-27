@@ -24,17 +24,19 @@
         const ball = {
             x: canvas.width / 2,
             y: canvas.height / 2,
-            radius: 50,
+            radius: 25  ,
             speedX: -speed,
             speedY: speed,
         }
 
-        const paddle1 = {
-            x: 100,
+        const paddle = {
+            x: 200,
             y: 100,
-            w: 50,
-            h: 200
+            w: 200,
+            h: 100
         }
+
+
 
         requestAnimationFrame = window.requestAnimationFrame ||
         window.msRequestAnimationFrame ||
@@ -52,6 +54,33 @@
             ball.y - ball.radius <= 0 ? ball.speedY = ball.speedY * -1 : null
 
 
+            
+            if(ball.x <= paddle.x + paddle.w && ball.y >= paddle.y){
+                ball.speedX *= -1
+            }
+
+
+            // if(ball.x <= paddle.x && ball.y <= paddle.y + paddle.h){
+            //     ball.speedX *= -1
+            //     console.log("Venstre side")
+            // }
+
+
+            // if(ball.y <= paddle.y + paddle.h && ball.x <= paddle.x + paddle.w){
+            //     ball.speedY *= -1
+            //     console.log("Bunn")
+            // }
+
+
+            // if(ball.y <= paddle.y && ball.x <= paddle.x + paddle.w){
+            //     ball.speedY *= -1
+            //     console.log("Topp")
+            // }
+
+
+
+
+            //Oppdaterer position på ball
             ball.x += ball.speedX
             ball.y += ball.speedY
 
@@ -65,10 +94,11 @@
             ctx.closePath()
 
             ctx.beginPath()
-            ctx.fillStyle = "black"
-            ctx.rect(paddle1.x, paddle1.y, paddle1.w, paddle1.h)
+            ctx.rect(paddle.x, paddle.y, paddle.w, paddle.h)
             ctx.fill()
+            ctx.closePath()
 
+            //Rekursivt kall av draw()-funksjon
             requestAnimationFrame(draw)
         }
 
