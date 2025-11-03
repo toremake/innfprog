@@ -267,17 +267,17 @@
       updateSingleStaticUI("energy", 60)
 
       //TODO: Oppgave 5. Funksjon for å oppdatere konfigurasjonsverdier.
-
+      
       function updateConfigValue(obj, configType, value) {
         console.log(configType)
-        obj === "notebook" ? notebook[configType] += value : obj === "gameConfig" ? gameConfig[configType] += value : null
+        obj === notebook ? notebook[configType] += value : obj === gameConfig ? gameConfig[configType] += value : null
 
         updateStaticUI()
       }
 
-      updateConfigValue("notebook", "variables", 10)
-      updateConfigValue("notebook", "arrays", 40)
-      updateConfigValue("gameConfig", "energy", 100)
+      updateConfigValue(notebook, "variables", 10)
+      updateConfigValue(notebook, "arrays", 40)
+      updateConfigValue(gameConfig, "energy", 100)
 
 
 
@@ -305,8 +305,6 @@
           ctx.closePath()
         }
       }
-
-
 
       requestAnimationFrame = window.mozRequestAnimationFrame ||
       window.msRequestAnimationFrame ||
