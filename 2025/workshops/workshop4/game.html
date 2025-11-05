@@ -183,10 +183,14 @@
         right: false
       }
 
-      const itemTypes = ["variables", "arrays", "loops", "functions", "energydrinks", "bugs"]
+      const itemTypes = ["variable", "array", "loop", "function", "energydrink", "bug"]
 
+      //type, x, y, lifetime, collected
       const items = [
-        {}
+        { type: "variable", x: 500, y: 40, lifetime: 10, collected: false },
+        { type: "array", x: 450, y: 200, lifetime: 15, collected: false },
+        { type: "loop", x: 200, y: 100, lifetime: 1000, collected: false },
+        { type: "bug", x: 300, y: 10, lifetime: 0, collected: false }
       ]
 
       function updateStaticUI() {
@@ -310,7 +314,6 @@
 
       updateConfigValue(notebook, "variables", 10)
       updateConfigValue(notebook, "arrays", 40)
-      updateConfigValue(gameConfig, "energy", 100)
 
 
       let fortranLoaded = false
@@ -318,10 +321,11 @@
       fortranImage.src = "icons/fortran.svg"
       fortranImage.onload = () => {
         fortranLoaded = true
+        console.log(fortranImage.width)
         console.log("Fortran image loaded") 
       }
 
-      function drawItem(type, x, y) {
+      function drawItem(type, x, y, lifetime) {
         let itemImage = new Image()
         itemImage.src = `icons/${type}.svg`
         ctx.drawImage(itemImage, x, y)
@@ -333,7 +337,7 @@
           ctx.fill()
           ctx.fillStyle = "white"
           ctx.font = "11px Verdana"
-          ctx.fillText("99", x - 7, y + 4)
+          ctx.fillText(lifetime, x - 7, y + 4)
           ctx.closePath()
         }
       }
@@ -342,7 +346,12 @@
         if(!gameConfig.gamePaused){
           gameConfig.duration++
           console.log(gameConfig.duration)
+
           updateSingleStaticUI("duration", gameConfig.duration)
+
+          items.forEach((item) => {
+            item.lifetime--
+          })
         }
       }, 1000)
       
@@ -358,6 +367,17 @@
         directions.down ? fortran.y += fortran.speed : null
         directions.left ? fortran.x -= fortran.speed : null
         directions.right ? fortran.x += fortran.speed : null
+
+        if(
+        fortran.x > canvas.width - (fortranImage.width / 2) ||
+        fortran.x + fortranImage.width / 2 < 0 ||
+        fortran.y + fortranImage.height / 2 < 0 ||
+        fortran.y > canvas.height - (fortranImage.height / 2)){
+          fortran.x = canvas.width / 2
+          fortran.y = canvas.height / 2
+          gameConfig.energy--
+          updateSingleStaticUI("energy", gameConfig.energy)
+        }
 
         if(fortranLoaded = true){
           ctx.drawImage(fortranImage, fortran.x, fortran.y)
@@ -383,9 +403,9 @@
           ctx.fillText(gameConfig.pauseText, canvas.width - 143, canvas.height - 7)
           ctx.closePath()
 
-          drawItem("function", 130, 150)
-          drawItem("bug", 500, 500)
-
+          items.filter((item) => item.lifetime > 0 || item.type === "bug").map((item) => {
+            drawItem(item.type, item.x, item.y, item.lifetime)
+          })
 
         requestAnimationFrame(drawElements)
       }
@@ -431,6 +451,9 @@
       • Hvordan bruker vi denne lagrede informasjonen for å tegne opp alle elementene?
         - forEach eller map?
 
+      /* 
+      BONUSOPPGAVE
+      Hvis Fortran havner (mer enn) halvveis utenfor spillbrettet, skal han miste en energi og bli plassert midt i canvaset.
       */
     </script>
   </body>
