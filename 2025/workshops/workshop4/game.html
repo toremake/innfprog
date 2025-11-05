@@ -154,7 +154,7 @@
         playerName: "Thor",
         energy: 10,
         points: 4000,
-        duration: 30,
+        duration: 0,
         gamePaused: false,
         pauseText: "Press P to pause"
       }
@@ -176,7 +176,18 @@
         y: canvas.height / 2
       }
 
+      const directions = {
+        up: false,
+        down: false,
+        left: false,
+        right: false
+      }
+
       const itemTypes = ["variables", "arrays", "loops", "functions", "energydrinks", "bugs"]
+
+      const items = [
+        {}
+      ]
 
       function updateStaticUI() {
         // Print playerinfo to HTML
@@ -237,15 +248,36 @@
         } else if (event.code === "KeyI") {
           toggleVisibility("info")
         } else if (event.code === "KeyP"){
-          // gameConfig.gamePaused === true 
-          // ? gameConfig.gamePaused = false 
-          // : gameConfig.gamePaused === false
-          // ? gameConfig.gamePaused = true 
-          // : null
-
           gameConfig.gamePaused = !gameConfig.gamePaused
         }
 
+        if(event.code === "ArrowUp" || event.code === "KeyW"){
+          directions.up = true
+        }
+        if(event.code === "ArrowDown" || event.code === "KeyS"){
+          directions.down = true
+        }
+        if(event.code === "ArrowLeft" || event.code === "KeyA"){
+          directions.left = true
+        }
+        if(event.code === "ArrowRight" || event.code === "KeyD"){
+          directions.right = true
+        }
+      })
+
+      document.addEventListener("keyup", (event) => {
+        if(event.code === "ArrowUp" || event.code === "KeyW"){
+          directions.up = false
+        }
+        if(event.code === "ArrowDown" || event.code === "KeyS"){
+          directions.down = false
+        }
+        if(event.code === "ArrowLeft" || event.code === "KeyA"){
+          directions.left = false
+        }
+        if(event.code === "ArrowRight" || event.code === "KeyD"){
+          directions.right = false
+        }
       })
 
       //TODO: Oppgave 3. Bytt onClick fra oppgave 1 med addEventListeners.
@@ -292,9 +324,8 @@
       function drawItem(type, x, y) {
         let itemImage = new Image()
         itemImage.src = `icons/${type}.svg`
-        itemImage.onload = () => {
-          ctx.drawImage(itemImage, x, y)
-        }
+        ctx.drawImage(itemImage, x, y)
+
         if (type != "bug") {
           ctx.beginPath()
           ctx.arc(x, y, 10, 0, 2 * Math.PI)
@@ -306,6 +337,14 @@
           ctx.closePath()
         }
       }
+
+      setInterval(() => {
+        if(!gameConfig.gamePaused){
+          gameConfig.duration++
+          console.log(gameConfig.duration)
+          updateSingleStaticUI("duration", gameConfig.duration)
+        }
+      }, 1000)
       
       requestAnimationFrame = window.mozRequestAnimationFrame ||
       window.msRequestAnimationFrame ||
@@ -313,7 +352,12 @@
       window.requestAnimationFrame
 
       function drawElements() {
-        // ctx.clearRect(0, 0, canvas.width, canvas.height)
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+        directions.up ? fortran.y -= fortran.speed : null
+        directions.down ? fortran.y += fortran.speed : null
+        directions.left ? fortran.x -= fortran.speed : null
+        directions.right ? fortran.x += fortran.speed : null
 
         if(fortranLoaded = true){
           ctx.drawImage(fortranImage, fortran.x, fortran.y)
@@ -347,6 +391,47 @@
       }
 
       drawElements()
+
+      /*
+      WS4 Oppgave 1
+
+      • Hvilken brukerinteraksjon må vi ta hensyn til i koden?
+        - Tastetrykk
+      • Hvilke deler av brukerinteraksjonen kan vi bruke i koden vår?
+        - keydown, keyup
+      • Hva skal endres i koden når vi hører brukerinteraksjonen?
+        - Retning
+      • Når skal endringen stoppes?
+        - Når man slutter å trykke på tasten
+      */
+
+      /* 
+      WS4 Oppgave 4.1
+      • Hva i koden skal lagre sekundene?
+        - gameConfig.duration
+      • Hvordan får vi koden til å gjøre noe hvert sekund?
+        - setInterval
+      • Hva skal skje hvert sekund? Hva skal endres?
+      • - gameConfig.duration
+      • Hvor skal endringene synes? Hva har vi fra tidligere?
+        - Funksjon updateSingleStaticUI
+      */
+
+      /* 
+      WS4 Oppgave 5
+      • Hvordan kan vi sørge for at koden kjenner til alle elementene som skal tegnes?
+        - forEach eller map?
+
+      • Hvordan lagrer vi mange elementer?
+        - Array med objekter - items
+
+      • Hvilken informasjon trenger elementene?
+        - type, x, y, lifetime, collected
+
+      • Hvordan bruker vi denne lagrede informasjonen for å tegne opp alle elementene?
+        - forEach eller map?
+
+      */
     </script>
   </body>
 </html>
