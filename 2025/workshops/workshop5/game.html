@@ -197,17 +197,6 @@
         { type: "bug", x: 300, y: 10, lifetime: 0, collected: false }
       ]
 
-      setInterval(() => {
-        items.push({
-          type: itemTypes[randomMinMax(0, itemTypes.length - 1)],
-          x: randomMinMax(50, canvas.width - 50),
-          y: randomMinMax(50, canvas.height - 50),
-          lifetime: randomMinMax(5, 15),
-          collected: false
-        })
-        console.log(items)
-      }, 3000)
-
       function updateStaticUI() {
         // Print playerinfo to HTML
         // Vi kan lagre HTML-elementer i variabler for lettere testing/kontroll i logg.
