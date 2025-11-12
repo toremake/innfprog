@@ -187,11 +187,41 @@
 
       //type, x, y, lifetime, collected
       const items = [
-        { type: "variable", x: 500, y: 40, lifetime: 10, collected: false },
-        { type: "array", x: 450, y: 200, lifetime: 15, collected: false },
-        { type: "loop", x: 200, y: 100, lifetime: 30, collected: false },
-        { type: "bug", x: 300, y: 10, lifetime: 0, collected: false }
+        // { type: "variable", x: 500, y: 40, lifetime: 10, collected: false },
+        // { type: "array", x: 450, y: 200, lifetime: 15, collected: false },
+        // { type: "loop", x: 200, y: 100, lifetime: 30, collected: false },
+        // { type: "bug", x: 300, y: canvas.height - 50, lifetime: 0, collected: false }
       ]
+
+      function randomMinMax(min, max){
+        return Math.floor(Math.random() * (max - min) + min)
+      }
+
+      function createElements(){
+
+        const elementType = itemTypes[randomMinMax(0, itemTypes.length)]
+
+        if(elementType === "bug"){
+        items.push({ 
+        type: "bug", 
+        x: randomMinMax(10, canvas.width - 10),
+        y: canvas.height + 50,
+        lifetime: 0,
+        collected: false
+          })
+        } else {
+          items.push({
+            type: elementType,
+            x: randomMinMax(10, canvas.width - 10),
+            y: randomMinMax(10, canvas.height - 10),
+            lifetime: randomMinMax(5, 15),
+            collected: false
+        })
+        }
+        setTimeout(createElements, randomMinMax(500, 3000))
+        }
+
+        createElements()
 
       function updateStaticUI() {
         // Print playerinfo to HTML
@@ -369,10 +399,12 @@
         directions.right ? fortran.x += fortran.speed : null
 
         if(
+          //Betingelser
         fortran.x > canvas.width - (fortranImage.width / 2) ||
         fortran.x + fortranImage.width / 2 < 0 ||
         fortran.y + fortranImage.height / 2 < 0 ||
         fortran.y > canvas.height - (fortranImage.height / 2)){
+          //Utfall
           fortran.x = canvas.width / 2
           fortran.y = canvas.height / 2
           gameConfig.energy--
@@ -403,7 +435,20 @@
           ctx.fillText(gameConfig.pauseText, canvas.width - 143, canvas.height - 7)
           ctx.closePath()
 
-          items.filter((item) => item.lifetime > 0 || item.type === "bug").map((item) => {
+          items.filter((item) => item.lifetime > 0 || item.type === "bug").map((item, index) => {
+            if(item.type === "bug"){
+              item.y -= 3
+              if(item.y < 0){
+                items.splice(index, 1)
+              }
+
+            }
+            //Kollisjonsdeteksjon
+            if(fortran.x + 20 > item.x && fortran.x < item.x + 20 && fortran.y + 20 > item.y && fortran.y < item.y + 20){
+              console.log(item.type)
+            }
+
+
             drawItem(item.type, item.x, item.y, item.lifetime)
           })
 
