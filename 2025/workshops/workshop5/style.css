@@ -15,7 +15,8 @@ header {
     justify-content: space-between;
     align-items: center;
     background: #f3f3f3;
-    color: var(--purple)
+    color: var(--purple);
+    flex-wrap: wrap;
 }
 
 header img {
@@ -42,6 +43,7 @@ header nav {
     gap: 5px;
     margin-right: 1rem;
 }
+
 #player li img {
     width: 32px;
     height: auto;
@@ -55,6 +57,7 @@ main {
     align-items: center;
     position: relative;
 }
+
 canvas {
     background-color: white;
     background-image: url(background.jpg);
@@ -68,7 +71,7 @@ canvas {
 /* NOTEBOOK */
 #notebook {
     display: none;
-    background: rgba(0,0,0,.5);
+    background: rgba(0, 0, 0, .5);
     z-index: 99;
     width: 100%;
     height: 100%;
@@ -78,13 +81,16 @@ canvas {
     left: 0;
     font-family: 'Gaegu', cursive;
 }
+
 #notebook table {
     width: 90%;
     border-spacing: 0;
 }
+
 #notebook td {
     border-bottom: 1px solid #ccc;
 }
+
 #notebook-page {
     width: 300px;
     background: #fff;
@@ -99,7 +105,9 @@ canvas {
     min-height: 50vh;
     font-size: 1.3rem;
 }
-#notebookToggler, #infoToggler {
+
+#notebookToggler,
+#infoToggler {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -112,10 +120,12 @@ canvas {
     cursor: pointer;
     padding: 5px 5px 5px 10px;
 }
+
 #notebookToggler img {
     width: 32px;
     margin: 0;
 }
+
 #closeNotebook {
     position: absolute;
     top: 5px;
@@ -126,7 +136,7 @@ canvas {
 /* INFOSCREEN */
 #info {
     display: none;
-    background: rgba(0,0,0,.5);
+    background: rgba(0, 0, 0, .5);
     z-index: 99;
     width: 100%;
     height: 100%;
@@ -163,6 +173,7 @@ canvas {
 .illustration {
     display: inline-block;
 }
+
 .illustration img {
     width: 32px;
     height: auto;
